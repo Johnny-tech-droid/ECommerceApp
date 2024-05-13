@@ -7,31 +7,42 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Product</h4>
+    <h4>@Html.DisplayFor(model => model.Name)</h4>
     <hr />
     <dl class="row">
+        
+        <dt class="col-sm-10">
+            <img src="/assets/images/placeholder01.JPEG" alt="product-image" class="product-image" />
+        </dt>
+        <dd>
+
+        </dd>
+        
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Name
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
+            Preis
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
+            @(Model.Price.ToString("C"))
+            
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            Beschreibung
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
+       
+
 
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model?.Id">Bearbeiten</a> |
+    <a asp-action="Index" class="btn btn-primary">Zurück zur Liste</a>
 </div>

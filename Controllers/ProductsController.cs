@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ECommerceApp.Data;
 using ECommerceApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerceApp.Controllers
 {
@@ -23,6 +24,17 @@ namespace ECommerceApp.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Product.ToListAsync());
+        }
+        // GET: Products/ShowSearchForm
+        public async Task<IActionResult> ShowSearchForm()
+        {
+            return View();
+        }
+        // PoST: Products/ShowSearchResults
+        public async Task<IActionResult> ShowSearchResults()
+        {
+            string SearchPhrase = HttpContext.Request.Form["searchPhrase"].ToString();
+            return View("Index", await _context.Product.Where(j => j.Name.Contains(SearchPhrase)).ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -44,6 +56,7 @@ namespace ECommerceApp.Controllers
         }
 
         // GET: Products/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +65,7 @@ namespace ECommerceApp.Controllers
         // POST: Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Price,Description")] Product product)
@@ -66,6 +80,7 @@ namespace ECommerceApp.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,6 +99,7 @@ namespace ECommerceApp.Controllers
         // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Description")] Product product)
@@ -117,6 +133,7 @@ namespace ECommerceApp.Controllers
         }
 
         // GET: Products/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,6 +154,7 @@ namespace ECommerceApp.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Product.FindAsync(id);
